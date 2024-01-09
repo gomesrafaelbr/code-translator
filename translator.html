@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translator</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Code Translator</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="selectSourceLanguage">Select Source Language</label>
+                    <select class="form-control" id="selectSourceLanguage">
+                        <option value="1">FOX</option>
+                        <option value="2">C#</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sourceText">Text to Translate</label>
+                    <textarea class="form-control" id="sourceText" rows="25" placeholder="Enter text"></textarea>
+                </div>
+                <div class="form-group" id="pnlPrefix">
+                    <label for="prefix">Prefix Output</label>
+                    <input type="text" id="prefix" placeholder="Example: myObject." value="">
+                    <button class="btn btn-danger" id="clearPrefix" type="button">Clear</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="selectTargetLanguage">Select Target Language</label>
+                    <select class="form-control" id="selectTargetLanguage">
+                        <option value="1">C# Property</option>
+                        <option value="2">C# DataColumn</option>
+                        <option value="3">C# DataRow</option>
+                        <option value="4">JavaScript (Object Property)</option>
+                        <option value="5">JavaScript (Object Initialization)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="targetText">Translated Text</label>
+                    <textarea class="form-control" id="targetText" rows="25" placeholder="Translated Output" readonly></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-primary btn-block mb-3" id="translateButton">Translate</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="translator.js"></script>
+</body>
+</html>
