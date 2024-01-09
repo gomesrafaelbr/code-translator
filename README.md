@@ -1,2 +1,2 @@
-# dev-tools
+# code-translator
 Code Translator
