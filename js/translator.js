@@ -1,8 +1,6 @@
 $(document).ready(function () {
     $('#translateButton').click(translate);
     $('#clearPrefix').click(clearPrefix);
-    $('#copyButton').click(copyTranslatedText);
-    $("#pnlPrefix").hide();
 });
 
 function translate() {
@@ -49,6 +47,12 @@ function translate() {
                         break;
                     case 5:
                         translatedContent += csharp_to_js_init(processedLine);
+                        break;
+                    case 6:
+                        translatedContent += csharp_ctor_clone(processedLine);
+                        break;
+                    case 7:
+                        translatedContent += csharp_ctor_string(processedLine);
                         break;
                 } 
             }
@@ -174,7 +178,29 @@ function csharp_prop_to_datacolumn(CurrentLine){
 function csharp_prop_to_datarow(CurrentLine){
     try {
         let identifier = $("#prefix").val();
-        return 'myDataRow["' + CurrentLine[0] + '"] = '  + identifier + CurrentLine[2] +";\n";
+        return 'myDataRow["' + CurrentLine[2] + '"] = '  + identifier + CurrentLine[2] +";\n";
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function csharp_ctor_clone(CurrentLine){
+    try {
+        let identifier = $("#prefix").val();
+        return CurrentLine[2] +  ' = '  + identifier + CurrentLine[2] +";\n";
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function csharp_ctor_string(CurrentLine){
+    try {
+        if(CurrentLine[1] === "string"){
+            return CurrentLine[2] + ' = "";' + "\n";
+        }
+        else{
+            return '';
+        }
     } catch (e) {
         console.log(e);
     }
