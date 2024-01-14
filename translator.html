@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Translator</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Code Translator</h1>
+        <!-- <h1 class="text-center mb-4">Code Translator</h1> -->
+        <div class="jumbotron text-center">
+            <h1>Code Translator</h1>
+            <p>Convert the properties declarations from a language to another</p> 
+          </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -24,7 +27,7 @@
                 </div>
                 <div class="form-group">
                     <label for="sourceText">Text to Translate</label>
-                    <textarea class="form-control" id="sourceText" rows="25" placeholder="Enter text"></textarea>
+                    <textarea class="form-control" id="sourceText" rows="15" placeholder="Enter text"></textarea>
                 </div>
 
             </div>
@@ -43,7 +46,7 @@
                 </div>
                 <div class="form-group">
                     <label for="targetText">Translated Text</label>
-                    <textarea class="form-control" id="targetText" rows="25" placeholder="Translated Output" readonly></textarea>
+                    <textarea class="form-control" id="targetText" rows="15" placeholder="Translated Output" readonly></textarea>
                 </div>
             </div>
         </div>

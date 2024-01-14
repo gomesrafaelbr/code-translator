@@ -1,1 +1,8 @@
-/* TODO */
+#pnlPrefix{
+    text-align: center;
+}
+
+#prefix{
+    margin: 0 5px;
+    border-radius: 5px;
+}
