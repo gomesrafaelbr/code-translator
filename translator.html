@@ -26,11 +26,7 @@
                     <label for="sourceText">Text to Translate</label>
                     <textarea class="form-control" id="sourceText" rows="25" placeholder="Enter text"></textarea>
                 </div>
-                <div class="form-group" id="pnlPrefix">
-                    <label for="prefix">Prefix Output</label>
-                    <input type="text" id="prefix" placeholder="Example: myObject." value="">
-                    <button class="btn btn-danger" id="clearPrefix" type="button">Clear</button>
-                </div>
+
             </div>
             <div class="col-md-6">
                 <div class="form-group">
@@ -41,6 +37,8 @@
                         <option value="3">C# DataRow</option>
                         <option value="4">JavaScript (Object Property)</option>
                         <option value="5">JavaScript (Object Initialization)</option>
+                        <option value="6">C# CTOR (Clone Prop)</option>
+                        <option value="7">C# CTOR (Init Strings)</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -50,7 +48,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6" id="pnlPrefix">
+                <label for="prefix">Prefix Output</label>
+                <input type="text" id="prefix" placeholder="Example: myObject." value="">
+                <button class="btn btn-danger" id="clearPrefix" type="button">Clear</button>
+            </div>
+            <div class="col-md-6">
                 <button class="btn btn-primary btn-block mb-3" id="translateButton">Translate</button>
             </div>
         </div>
@@ -59,6 +62,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="translator.js"></script>
+    <script src="js/translator.js"></script>
 </body>
 </html>
