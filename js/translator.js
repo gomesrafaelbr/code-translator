@@ -15,48 +15,55 @@ function translate() {
             return;
         }
 
-        const linesArray = sourceText.split('\n');
+        if(sourceLanguage == 3){
+            translatedContent = normalizeInput(sourceText);
+            $('#selectSourceLanguage').val(1);
+            return;
+        }
+        else{
+            const linesArray = sourceText.split('\n');
 
-        linesArray.forEach(function(line) {    
-            const processedLine = line.split(' ');
-
-            if(sourceLanguage == 1){
-                switch (targetLanguage) {
-                    case 1:
-                        translatedContent += fox_to_csharp_prop(processedLine);
-                        break;
-                    case 2:
-                        translatedContent += fox_to_csharp_datacolumn(processedLine);
-                        break;
-                    case 3:
-                        translatedContent += fox_to_csharp_datarow(processedLine);
-                        break;
-                }
-            }
-
-            if(sourceLanguage == 2){
-                switch (targetLanguage) {
-                    case 2:
-                        translatedContent += csharp_prop_to_datacolumn(processedLine);
-                        break;
+            linesArray.forEach(function(line) {    
+                const processedLine = line.split(' ');
+    
+                if(sourceLanguage == 1){
+                    switch (targetLanguage) {
+                        case 1:
+                            translatedContent += fox_to_csharp_prop(processedLine);
+                            break;
+                        case 2:
+                            translatedContent += fox_to_csharp_datacolumn(processedLine);
+                            break;
                         case 3:
-                        translatedContent += csharp_prop_to_datarow(processedLine);
-                        break;
-                    case 4:
-                        translatedContent += csharp_to_js_prop(processedLine);
-                        break;
-                    case 5:
-                        translatedContent += csharp_to_js_init(processedLine);
-                        break;
-                    case 6:
-                        translatedContent += csharp_ctor_clone(processedLine);
-                        break;
-                    case 7:
-                        translatedContent += csharp_ctor_string(processedLine);
-                        break;
-                } 
-            }
-        });
+                            translatedContent += fox_to_csharp_datarow(processedLine);
+                            break;
+                    }
+                }
+    
+                if(sourceLanguage == 2){
+                    switch (targetLanguage) {
+                        case 2:
+                            translatedContent += csharp_prop_to_datacolumn(processedLine);
+                            break;
+                        case 3:
+                            translatedContent += csharp_prop_to_datarow(processedLine);
+                            break;
+                        case 4:
+                            translatedContent += csharp_to_js_prop(processedLine);
+                            break;
+                        case 5:
+                            translatedContent += csharp_to_js_init(processedLine);
+                            break;
+                        case 6:
+                            translatedContent += csharp_ctor_clone(processedLine);
+                            break;
+                        case 7:
+                            translatedContent += csharp_ctor_string(processedLine);
+                            break;
+                    } 
+                }
+            });
+        }
 
         $('#targetText').val(translatedContent);
     } catch (e) {
@@ -74,6 +81,9 @@ function fox_to_csharp_prop(CurrentLine){
         }
         else if(CurrentLine[1] === "d"){
             return "public string " + CurrentLine[0] + " { get; set; }" + "\n";
+        }
+        else if(CurrentLine[1] === "l"){
+            return "public bool " + CurrentLine[0] + " { get; set; }" + "\n";
         }
     } catch (e) {
         console.log(e);
@@ -93,6 +103,9 @@ function fox_to_csharp_datacolumn(CurrentLine){
         }
         else if(CurrentLine[1] === "d"){
             return identifier+ 'Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(string)));'  + "\n";
+        }
+        else if(CurrentLine[1] === "l"){
+            return identifier+ 'Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(bool)));'  + "\n";
         }
     } catch (e) {
         console.log(e);
@@ -203,6 +216,52 @@ function csharp_ctor_string(CurrentLine){
         }
     } catch (e) {
         console.log(e);
+    }
+}
+
+function normalizeInput(textInput){
+    try {
+        let normalizedText = "";
+
+        //Match new lines
+        let regex = /\n/g;
+
+        //Replace new lines with an empty string
+        normalizedText = textInput.replace(regex, '');
+
+        //Match parentheses and their contents
+        regex = /\([^)]*\)/g;
+
+        //Replace matches with an empty string
+        normalizedText = normalizedText.replace(regex, '');
+
+        //Match semicolons
+        regex = /;/g;
+
+        //Replace semicolons with an empty string
+        normalizedText = normalizedText.replace(regex, '');
+
+        //Match multiple whitespaces
+        regex = /\s+/g;
+
+        //Replace multiple whitespaces with a single whitespace
+        normalizedText = normalizedText.replace(regex, ' ');
+
+        //Match a colon followed by a whitespace
+        regex = /,\s/g;
+        
+        //Replace matches with just a colon
+        normalizedText = normalizedText.replace(regex, ',');
+
+        //Math commas
+        regex = /,/g;
+
+        //Replace commas with line break
+        normalizedText = normalizedText.replace(regex, "\n");
+        
+        $('#sourceText').val(normalizedText);
+    } catch (error) {
+        console.log(error);
     }
 }
 
