@@ -1,13 +1,13 @@
 $(document).ready(function () {
-    $('#translateButton').click(translate);
-    $('#clearPrefix').click(clearPrefix);
+    $("#translateButton").click(translate);
+    $("#clearPrefix").click(clearPrefix);
 });
 
 function translate() {
     try {
-        let sourceText = $.trim($('#sourceText').val());
-        let sourceLanguage = parseInt($('#selectSourceLanguage').val());
-        let targetLanguage = parseInt($('#selectTargetLanguage').val());
+        let sourceText = $.trim($("#sourceText").val());
+        let sourceLanguage = parseInt($("#selectSourceLanguage").val());
+        let targetLanguage = parseInt($("#selectTargetLanguage").val());
 
         let translatedContent = '';
 
@@ -17,7 +17,7 @@ function translate() {
 
         if(sourceLanguage == 3){
             translatedContent = normalizeInput(sourceText);
-            $('#selectSourceLanguage').val(1);
+            $("#selectSourceLanguage").val(1);
             return;
         }
         else{
@@ -36,6 +36,9 @@ function translate() {
                             break;
                         case 3:
                             translatedContent += fox_to_csharp_datarow(processedLine);
+                            break;
+                        default:
+                            translatedContent = "Operação não disponível. Contate o time de desenvolvimento."
                             break;
                     }
                 }
@@ -60,12 +63,15 @@ function translate() {
                         case 7:
                             translatedContent += csharp_ctor_string(processedLine);
                             break;
+                        default:
+                            translatedContent = "Operação não disponível. Contate o time de desenvolvimento."
+                            break;
                     } 
                 }
             });
         }
 
-        $('#targetText').val(translatedContent);
+        $("#targetText").val(translatedContent);
     } catch (e) {
         console.log(e);
     }
@@ -92,8 +98,8 @@ function fox_to_csharp_prop(CurrentLine){
 
 function fox_to_csharp_datacolumn(CurrentLine){
     try {
-        let identifier = $("#prefix").val();
-        identifier = "myDT.";
+		let s_prefix = $.trim($("#prefix").val());
+        let identifier = s_prefix.length == 0 ? "myDT." : s_prefix;
 
         if(CurrentLine[1] === "n"){
             return identifier + 'Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(decimal)));'  + "\n";
@@ -114,9 +120,10 @@ function fox_to_csharp_datacolumn(CurrentLine){
 
 function fox_to_csharp_datarow(CurrentLine){
     try {
-        let identifier = $("#prefix").val();
-        identifier = "myDataRow";
-        return identifier + '["' + CurrentLine[0] + '"] = '  + identifier + CurrentLine[0] +";\n";
+        let s_prefix = $.trim($("#prefix").val());
+        let identifier = s_prefix.length == 0 ? "myObj." : s_prefix;
+
+        return 'myRow["' + CurrentLine[0] + '"] = '  + identifier + CurrentLine[0] +";\n";
     } catch (e) {
         console.log(e);
     }
@@ -124,26 +131,28 @@ function fox_to_csharp_datarow(CurrentLine){
 
 function csharp_to_js_prop(CurrentLine){
     try {
-        if(CurrentLine[1] === "string"){
-            return CurrentLine[2] + " : ''," + "\n";
+		let identifier = $.trim($("#prefix").val());
+                
+		if(CurrentLine[1] === "string"){
+            return identifier + CurrentLine[2] + " : ''," + "\n";
         }
         else if(CurrentLine[1] === "decimal"){
-            return CurrentLine[2] + " : 0," + "\n";
+            return identifier + CurrentLine[2] + " : 0," + "\n";
         }
         else if(CurrentLine[1] === "float"){
-            return CurrentLine[2] + " : 0," + "\n";
+            return identifier + CurrentLine[2] + " : 0," + "\n";
         }
         else if(CurrentLine[1] === "int"){
-            return CurrentLine[2] + " : 0," + "\n";
+            return identifier + CurrentLine[2] + " : 0," + "\n";
         }
         else if(CurrentLine[1] === "DateTime"){
-            return CurrentLine[2] + " : ''," + "\n";
+            return identifier + CurrentLine[2] + " : ''," + "\n";
         }
         else if(CurrentLine[1] === "bool"){
-            return CurrentLine[2] + " : false," + "\n";
+            return identifier + CurrentLine[2] + " : false," + "\n";
         }
         else {
-            return CurrentLine[2] + " : []," + "\n";
+            return identifier + CurrentLine[2] + " : []," + "\n";
         }
     } catch (e) {
         console.log(e);
@@ -152,26 +161,28 @@ function csharp_to_js_prop(CurrentLine){
 
 function csharp_to_js_init(CurrentLine){
     try {
+		let identifier = $.trim($("#prefix").val());		
+		
         if(CurrentLine[1] === "string"){
-            return CurrentLine[2] + " = '';" + "\n";
+            return identifier +  CurrentLine[2] + " = '';" + "\n";
         }
         else if(CurrentLine[1] === "decimal"){
-            return CurrentLine[2] + " = 0;" + "\n";
+            return identifier +  CurrentLine[2] + " = 0;" + "\n";
         }
         else if(CurrentLine[1] === "float"){
-            return CurrentLine[2] + " = 0;" + "\n";
+            return identifier +  CurrentLine[2] + " = 0;" + "\n";
         }
         else if(CurrentLine[1] === "int"){
-            return CurrentLine[2] + " = 0;" + "\n";
+            return identifier +  CurrentLine[2] + " = 0;" + "\n";
         }
         else if(CurrentLine[1] === "DateTime"){
-            return CurrentLine[2] + " = '';" + "\n";
+            return identifier +  CurrentLine[2] + " = '';" + "\n";
         }
         else if(CurrentLine[1] === "bool"){
-            return CurrentLine[2] + " = false;" + "\n";
+            return identifier +  CurrentLine[2] + " = false;" + "\n";
         }
         else {
-            return CurrentLine[2] + " = [];" + "\n";
+            return identifier +  CurrentLine[2] + " = [];" + "\n";
         }
     } catch (e) {
         console.log(e);
@@ -180,8 +191,9 @@ function csharp_to_js_init(CurrentLine){
 
 function csharp_prop_to_datacolumn(CurrentLine){
     try {
-        let identifier = $("#prefix").val();
-        identifier = "myDT.";
+        let s_prefix = $.trim($("#prefix").val());
+        let identifier = s_prefix.length == 0 ? "myDT." : s_prefix;
+
         return identifier + 'Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(' + CurrentLine[1] + ')));'  + "\n";
     } catch (e) {
         console.log(e);
@@ -190,8 +202,10 @@ function csharp_prop_to_datacolumn(CurrentLine){
 
 function csharp_prop_to_datarow(CurrentLine){
     try {
-        let identifier = $("#prefix").val();
-        return 'myDataRow["' + CurrentLine[2] + '"] = '  + identifier + CurrentLine[2] +";\n";
+        let s_prefix = $.trim($("#prefix").val());
+        let identifier = s_prefix.length == 0 ? "myObj." : s_prefix;
+
+        return 'myRow["' + CurrentLine[2] + '"] = '  + identifier + CurrentLine[2] +";\n";
     } catch (e) {
         console.log(e);
     }
@@ -199,7 +213,8 @@ function csharp_prop_to_datarow(CurrentLine){
 
 function csharp_ctor_clone(CurrentLine){
     try {
-        let identifier = $("#prefix").val();
+        let identifier = $.trim($("#prefix").val());
+
         return CurrentLine[2] +  ' = '  + identifier + CurrentLine[2] +";\n";
     } catch (e) {
         console.log(e);
@@ -259,7 +274,7 @@ function normalizeInput(textInput){
         //Replace commas with line break
         normalizedText = normalizedText.replace(regex, "\n");
         
-        $('#sourceText').val(normalizedText);
+        $("#sourceText").val(normalizedText);
     } catch (error) {
         console.log(error);
     }
@@ -267,7 +282,7 @@ function normalizeInput(textInput){
 
 function clearPrefix(){
     try {
-        $('#prefix').val("");
+        $("#prefix").val("");
     } catch (e) {
         console.log(e);
     }
