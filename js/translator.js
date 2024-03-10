@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $("#translateButton").click(translate);
-    $("#clearPrefix").click(clearPrefix);
+    $("#btnClear").click(clearPrefix);
+    $("#btnReplace").click(replaceAll);
 });
 
 function translate() {
@@ -98,20 +99,17 @@ function fox_to_csharp_prop(CurrentLine){
 
 function fox_to_csharp_datacolumn(CurrentLine){
     try {
-		let s_prefix = $.trim($("#prefix").val());
-        let identifier = s_prefix.length == 0 ? "myDT." : s_prefix;
-
         if(CurrentLine[1] === "n"){
-            return identifier + 'Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(decimal)));'  + "\n";
+            return 'myDT.Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(decimal)));'  + "\n";
         }
         else if(CurrentLine[1] === "c"){
-            return identifier + 'Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(string)));'  + "\n";
+            return 'myDT.Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(string)));'  + "\n";
         }
         else if(CurrentLine[1] === "d"){
-            return identifier+ 'Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(string)));'  + "\n";
+            return 'myDT.Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(string)));'  + "\n";
         }
         else if(CurrentLine[1] === "l"){
-            return identifier+ 'Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(bool)));'  + "\n";
+            return 'myDT.Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(bool)));'  + "\n";
         }
     } catch (e) {
         console.log(e);
@@ -120,10 +118,7 @@ function fox_to_csharp_datacolumn(CurrentLine){
 
 function fox_to_csharp_datarow(CurrentLine){
     try {
-        let s_prefix = $.trim($("#prefix").val());
-        let identifier = s_prefix.length == 0 ? "myObj." : s_prefix;
-
-        return 'myRow["' + CurrentLine[0] + '"] = '  + identifier + CurrentLine[0] +";\n";
+        return 'myRow["' + CurrentLine[0] + '"] = myObj.' + CurrentLine[0] +";\n";
     } catch (e) {
         console.log(e);
     }
@@ -131,7 +126,7 @@ function fox_to_csharp_datarow(CurrentLine){
 
 function csharp_to_js_prop(CurrentLine){
     try {
-		let identifier = $.trim($("#prefix").val());
+		let identifier = "myObj.";
                 
 		if(CurrentLine[1] === "string"){
             return identifier + CurrentLine[2] + " : ''," + "\n";
@@ -161,7 +156,7 @@ function csharp_to_js_prop(CurrentLine){
 
 function csharp_to_js_init(CurrentLine){
     try {
-		let identifier = $.trim($("#prefix").val());		
+		let identifier = "myObj.";		
 		
         if(CurrentLine[1] === "string"){
             return identifier +  CurrentLine[2] + " = '';" + "\n";
@@ -191,10 +186,7 @@ function csharp_to_js_init(CurrentLine){
 
 function csharp_prop_to_datacolumn(CurrentLine){
     try {
-        let s_prefix = $.trim($("#prefix").val());
-        let identifier = s_prefix.length == 0 ? "myDT." : s_prefix;
-
-        return identifier + 'Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(' + CurrentLine[1] + ')));'  + "\n";
+        return 'myDT.Columns.Add(new DataColumn("' + CurrentLine[0] + '", typeof(' + CurrentLine[1] + ')));'  + "\n";
     } catch (e) {
         console.log(e);
     }
@@ -202,10 +194,7 @@ function csharp_prop_to_datacolumn(CurrentLine){
 
 function csharp_prop_to_datarow(CurrentLine){
     try {
-        let s_prefix = $.trim($("#prefix").val());
-        let identifier = s_prefix.length == 0 ? "myObj." : s_prefix;
-
-        return 'myRow["' + CurrentLine[2] + '"] = '  + identifier + CurrentLine[2] +";\n";
+        return 'myRow["' + CurrentLine[2] + '"] = myObj.' + CurrentLine[2] +";\n";
     } catch (e) {
         console.log(e);
     }
@@ -213,7 +202,7 @@ function csharp_prop_to_datarow(CurrentLine){
 
 function csharp_ctor_clone(CurrentLine){
     try {
-        let identifier = $.trim($("#prefix").val());
+        let identifier = "myObj.";
 
         return CurrentLine[2] +  ' = '  + identifier + CurrentLine[2] +";\n";
     } catch (e) {
@@ -282,8 +271,23 @@ function normalizeInput(textInput){
 
 function clearPrefix(){
     try {
-        $("#prefix").val("");
-    } catch (e) {
-        console.log(e);
+        $(".prefix").val("");
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function replaceAll(){
+    try {
+        let translatedText = $("#targetText").val();
+        let inpFrom = $.trim($("#prefix-from").val());
+        let pattern = new RegExp(inpFrom, 'g');; 
+        let inpTo = $.trim($("#prefix-to").val());
+
+        let modifiedText = translatedText.replace(pattern, inpTo);
+
+        $("#targetText").val(modifiedText);
+    } catch (error) {
+        console.log(error);
     }
 }

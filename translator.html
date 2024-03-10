@@ -11,15 +11,14 @@
 
 <body>
     <div class="container mt-5">
-        <!-- <h1 class="text-center mb-4">Code Translator</h1> -->
-        <div class="jumbotron text-center">
+        <div id="#pnl-jumbotron" class="jumbotron text-center">
             <h1>Code Translator</h1>
             <p>Convert the properties declarations from a language to another</p> 
           </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="selectSourceLanguage">Select Source Language</label>
+                    <label for="selectSourceLanguage">Source Language</label>
                     <select class="form-control" id="selectSourceLanguage">
                         <option value="1">FOX</option>
                         <option value="2">C#</option>
@@ -34,7 +33,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="selectTargetLanguage">Select Target Language</label>
+                    <label for="selectTargetLanguage">Target Language</label>
                     <select class="form-control" id="selectTargetLanguage">
                         <option value="1">C# Property</option>
                         <option value="2">C# DataColumn</option>
@@ -49,16 +48,20 @@
                     <label for="targetText">Translated Text</label>
                     <textarea class="form-control" id="targetText" rows="15" placeholder="Translated Output" readonly></textarea>
                 </div>
+                
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6" id="pnlPrefix">
-                <label for="prefix">Prefix Output</label>
-                <input type="text" id="prefix" placeholder="Example: myObject." value="">
-                <button class="btn btn-danger" id="clearPrefix" type="button">Clear</button>
-            </div>
             <div class="col-md-6">
                 <button class="btn btn-primary btn-block mb-3" id="translateButton">Translate</button>
+            </div>
+            <div class="col-md-6" id="pnlPrefix">
+                <label for="prefix">Replace</label>
+                <input type="text" class="prefix" id="prefix-from" value="">
+                <label for="prefix-to">To</label>
+                <input type="text" class="prefix" id="prefix-to" value="">
+                <button class="btn btn-success" id="btnReplace" type="button">Ok</button>
+                <button class="btn btn-danger" id="btnClear" type="button">Clear</button>
             </div>
         </div>
     </div>
